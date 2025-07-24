@@ -1,7 +1,7 @@
 name: Veracode Upload and Scan
 
 on:
-  workflow_dispatch:  # allows you to trigger the scan manually
+  workflow_dispatch:  # Allows manual trigger
 
 jobs:
   veracode_scan:
@@ -14,9 +14,9 @@ jobs:
         run: zip -r app.zip . -x "*.git*" "*.md" "*.yml"
 
       - name: Upload to Veracode and scan
-uses: veracode/github-uploadandscan-action@v0.2.5
+        uses: veracode/github-uploadandscan-action@v0.2.5
         with:
-          appname: 'TEST - GITHUB SCAN'  # ← Change to match your Veracode app name exactly
+          appname: 'TEST - GITHUB SCAN'   # Make sure this matches your Veracode app name exactly
           createprofile: false
           filepath: './app.zip'
           version: ${{ github.run_id }}
