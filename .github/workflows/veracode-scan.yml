@@ -1,0 +1,24 @@
+name: Veracode Upload and Scan
+
+on:
+  workflow_dispatch:  # allows you to trigger the scan manually
+
+jobs:
+  veracode_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Zip project
+        run: zip -r app.zip . -x "*.git*" "*.md" "*.yml"
+
+      - name: Upload to Veracode and scan
+        uses: veracode/veracode-uploadandscan-action@v1.0.12
+        with:
+          appname: 'TEST - GITHUB SCAN'  # ← Change to match your Veracode app name exactly
+          createprofile: false
+          filepath: './app.zip'
+          version: ${{ github.run_id }}
+          vid: ${{ secrets.VERACODE_API_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY }}
